@@ -1,0 +1,271 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  width: 100%;
+}
+
+/* styles/Login.css */
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: #f8f9fa;
+  padding: 50px 0; /* Tambahkan padding agar tidak terlalu menekan ke atas */
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px; /* Batasi lebar card login */
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+}
+
+.login-form {
+  width: 100%;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+/* Dropdown styles */
+.biru {
+  color: #0a6fba !important;
+}
+
+.navbar .nav-link:hover {
+  color: #075a9b !important;
+}
+
+.navbar-toggler {
+  border-color: #0a6fba !important;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(10, 111, 186, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
+}
+
+/* Pastikan menu dropdown bisa muncul */
+.navbar-collapse {
+  transition: all 0.3s ease-in-out;
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.dropdown-menu .dropdown-item {
+  color: #0a6fba !important;
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #e3f2fd !important;
+  color: #075a9b !important;
+}
+
+.logo img {
+  width: 138px;
+  height: auto;
+  margin-left: 20vh;
+}
+
+.navigation ul {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  margin-right: 20vh;
+}
+
+.navigation li {
+  margin: 0 5vh;
+}
+
+.navigation a {
+  text-decoration: none;
+  color: #0f5dc5;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-weight: 500;
+}
+
+.image-container {
+  position: relative;
+}
+
+.background-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.text-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 48px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.profile-judul {
+  margin: 5vh 0 5vh 25vh;
+}
+
+/* Pastikan konten di dalam profile-item diposisikan di tengah */
+.profile-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Untuk memusatkan secara horizontal */
+}
+
+.sejarah-container {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  height: auto;
+  background-color: #f5f5f5;
+  padding: 10vh;
+  margin: 10vh;
+}
+
+.sejarah-item {
+  display: flex;
+  align-items: center;
+}
+
+.sejarah-container h1 {
+  margin-bottom: 3vh;
+}
+
+.sejarah-item img {
+  margin-left: 10vh;
+  width: 530px;
+  height: 292px;
+}
+
+.visi-container {
+  display: flex;
+  width: 90%;
+  height: auto;
+  background-color: #f5f5f5;
+  align-items: center;
+}
+
+.visi-container img {
+  width: 417px;
+  height: 576px;
+}
+
+.misi-container {
+  display: block;
+  height: auto;
+  margin-left: 50px;
+}
+
+.misi-container .visi {
+  margin-bottom: 5vh;
+}
+
+.salam-container {
+  display: flex;
+  width: 90%;
+  flex-direction: column;
+  align-items: center;
+  padding: 10vh;
+  margin: 10vh;
+}
+
+.salam-direktur p {
+  margin-top: 5vh;
+  line-height: 1.8; /* Sesuaikan jarak antar baris */
+}
+
+.salam-direktur span {
+  margin-bottom: 20px;
+}
+
+.news-image {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  transition: transform 0.3s ease-in-out;
+}
+
+.news-image:hover {
+  transform: scale(1.05);
+}
+
+.footer {
+  background-color: #096fbb; /* Warna background */
+  color: #fff; /* Warna teks */
+  padding: 5vh;
+  font-family: Arial, sans-serif;
+  margin-top: 10vh;
+}
+
+.footer-sections {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5vh;
+}
+
+.footer-section {
+  flex: 1;
+  margin: 0 20px;
+}
+
+.footer-logo {
+  width: 30vh; /* Atur ukuran logo */
+}
+
+.footer-text {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.footer-section h5 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li a {
+  color: #fff; /* Warna teks link */
+  text-decoration: none; /* Hilangkan garis bawah */
+  transition: color 0.3s ease;
+}
+
+.section-list {
+  margin-top: 8px;
+}
+
+.section-listul {
+  margin-top: 20px;
+}
+
+.footer-bottom {
+  text-align: left;
+  border-top: 1px solid #fff;
+  padding-top: 10px;
+  font-size: 14px;
+}
