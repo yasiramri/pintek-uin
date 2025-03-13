@@ -1,9 +1,10 @@
-/* pages/DashboardNews.js */
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DashboardNavbar from '../components/DashboardNavbar';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Import gaya Quill
 
 export default function DashboardNews() {
   const navigate = useNavigate();
@@ -13,6 +14,8 @@ export default function DashboardNews() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [editingNews, setEditingNews] = useState(null);
+  const [categories, setCategories] = useState([]); // State untuk menyimpan kategori
+  const [categoryId, setCategoryId] = useState(''); // State untuk menyimpan kategori yang dipilih
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -28,7 +31,12 @@ export default function DashboardNews() {
       const response = await axios.get('http://localhost:8080/news', {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setNews(response.data);
+
+      // Ambil kategori dari response berita
+      const categories = response.data.map((item) => item.category); // Ekstrak kategori dari setiap berita
+      setCategories([...new Set(categories.map((category) => category.id))]); // Hanya menyimpan ID kategori yang unik
+
+      setNews(response.data); // Menyimpan berita
     } catch (error) {
       console.error('Error fetching news:', error);
     }
@@ -39,10 +47,10 @@ export default function DashboardNews() {
   };
 
   const handleSubmit = async () => {
-    if (!title || !content || !selectedFile) {
+    if (!title || !content || !selectedFile || !categoryId) {
       Swal.fire(
         'Error',
-        'Harap isi semua bidang termasuk gambar, judul, dan konten.',
+        'Harap isi semua bidang termasuk gambar, judul, konten, dan kategori.',
         'error'
       );
       return;
@@ -51,8 +59,9 @@ export default function DashboardNews() {
     setUploading(true);
     const formData = new FormData();
     formData.append('title', title);
-    formData.append('content', content);
+    formData.append('content', content); // Mengirimkan konten yang sudah diproses oleh Quill
     formData.append('image', selectedFile);
+    formData.append('categoryId', categoryId); // Mengirimkan categoryId
 
     try {
       const token = localStorage.getItem('token');
@@ -79,18 +88,24 @@ export default function DashboardNews() {
     setEditingNews(newsToEdit);
     setTitle(newsToEdit.title);
     setContent(newsToEdit.content);
+    setCategoryId(newsToEdit.category.id); // Set categoryId saat edit
   };
 
   const handleUpdate = async () => {
-    if (!editingNews || !title || !content) {
-      Swal.fire('Error', 'Harap isi semua bidang judul dan konten.', 'error');
+    if (!editingNews || !title || !content || !categoryId) {
+      Swal.fire(
+        'Error',
+        'Harap isi semua bidang judul, konten, dan kategori.',
+        'error'
+      );
       return;
     }
 
     setUploading(true);
     const formData = new FormData();
     formData.append('title', title);
-    formData.append('content', content);
+    formData.append('content', content); // Mengirimkan konten yang sudah diproses oleh Quill
+    formData.append('categoryId', categoryId); // Mengirimkan categoryId
     if (selectedFile) {
       formData.append('image', selectedFile);
     }
@@ -149,6 +164,7 @@ export default function DashboardNews() {
     setEditingNews(null);
     setTitle('');
     setContent('');
+    setCategoryId('');
     setSelectedFile(null);
   };
 
@@ -166,12 +182,28 @@ export default function DashboardNews() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-          <textarea
-            className="form-control mb-2"
-            placeholder="Konten"
+          <ReactQuill
             value={content}
-            onChange={(e) => setContent(e.target.value)}
-          ></textarea>
+            onChange={setContent}
+            placeholder="Konten Berita"
+            className="mb-2"
+          />
+          <select
+            className="form-control mb-2"
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
+          >
+            <option value="">Pilih Kategori</option>
+            {categories.length > 0 ? (
+              categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))
+            ) : (
+              <option value="">Tidak ada kategori tersedia</option>
+            )}
+          </select>
           <input
             type="file"
             className="form-control mb-2"
