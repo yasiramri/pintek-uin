@@ -1,5 +1,5 @@
 import React from 'react';
-import NewsComponent from '../components/News';
+import NewsFeatured from '../components/NewsFeatured';
 
 function Home() {
   return (
@@ -15,7 +15,7 @@ function Home() {
         </div>
       </div>
       <div className="container mt-5">
-        <NewsComponent />
+        <NewsFeatured />
       </div>
     </div>
   );

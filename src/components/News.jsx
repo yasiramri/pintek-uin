@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useNavigate } from 'react-router-dom';
 
 export default function NewsComponent() {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchNews();
@@ -45,7 +43,7 @@ export default function NewsComponent() {
                 style={{ fontSize: '16px' }}
               >
                 <h2 className="title mb-3" style={{ fontSize: '12.8px' }}>
-                  {index === 0 ? 'Sambutan Rektor' : 'Sorotan'}
+                  {index === 0 ? 'Technology' : 'Sains'}
                 </h2>
                 <div
                   className="text-black bg-body-secondary mb-3 text-center post-images header-images"

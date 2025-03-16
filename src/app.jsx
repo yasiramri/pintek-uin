@@ -10,6 +10,7 @@ import NewsDashboard from './pages/NewsDashboard';
 import StrukturOrganisasiDashboard from './pages/StrukturOrganisasiDashboard';
 import SalamDirekturDashboard from './pages/SalamDirekturDashboard';
 import News from './pages/News';
+import NewsDetail from './components/NewsDetail';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             element={<SalamDirekturDashboard />}
           />
           <Route path="/news" element={<News />} />
+          <Route path="/news/:id" element={<NewsDetail />} />
         </Routes>
       </div>
       <Footer />
