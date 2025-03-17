@@ -11,11 +11,11 @@ import StrukturOrganisasiDashboard from './pages/StrukturOrganisasiDashboard';
 import SalamDirekturDashboard from './pages/SalamDirekturDashboard';
 import News from './pages/News';
 import NewsDetail from './components/NewsDetail';
+import EditNews from './pages/EditNews';
 
 function App() {
   return (
     <div className="app-container">
-      {/* Menampilkan Navbar hanya di halaman yang bukan bagian dari Dashboard */}
       {window.location.pathname.startsWith('/dashboard') ? null : <Navbar />}
       <div className="content">
         <Routes>
@@ -34,6 +34,7 @@ function App() {
           />
           <Route path="/news" element={<News />} />
           <Route path="/news/:id" element={<NewsDetail />} />
+          <Route path="/dashboard/edit-news/:id" element={<EditNews />} />
         </Routes>
       </div>
       <Footer />

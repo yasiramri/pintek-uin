@@ -35,7 +35,7 @@ const NewsFeatured = () => {
         {featuredNews.length === 0 ? (
           <p className="text-center">Tidak ada berita unggulan.</p>
         ) : (
-          featuredNews.map((item, index) => (
+          featuredNews.map((item) => (
             <div
               className="col-12 col-md-6"
               key={item.id}
@@ -44,46 +44,31 @@ const NewsFeatured = () => {
               <div className="row" style={{ fontSize: '16px' }}>
                 <div
                   className="col mb-2 card-top-news p-3"
-                  style={{
-                    fontSize: '16px',
-                    border: '1px solid #ddd',
-                    borderRadius: '8px',
-                  }}
+                  style={{ fontSize: '16px' }}
                 >
-                  {/* Kategori berita */}
-                  <h2
-                    className="title mb-3"
-                    style={{
-                      fontSize: '12.8px',
-                      fontWeight: 'bold',
-                      color: '#555',
-                    }}
-                  >
-                    {item.category?.name ||
-                      (index === 0 ? 'Technology' : 'Sains')}
-                  </h2>
+                  {/* Badge Kategori Bootstrap */}
+                  {item.category && (
+                    <span className="badge bg-dark mb-2">
+                      {item.category.name}
+                    </span>
+                  )}
 
-                  {/* Gambar berita */}
-                  <div className="text-black bg-body-secondary mb-3 text-center post-images header-images">
+                  {/* Gambar berita dengan efek hover */}
+                  <div className="text-black bg-body-secondary mb-3 text-center post-images header-images news-image-container">
                     <Link to={`/news/${item.id}`} title={item.title}>
                       <img
-                        className="img-fluid news-image"
+                        className="news-image"
                         src={`http://localhost:8080/uploads/newsImages/${item.imagePath
                           .split('/')
                           .pop()}`}
                         alt={item.title}
-                        style={{
-                          borderRadius: '6px',
-                          maxHeight: '200px',
-                          objectFit: 'cover',
-                        }}
                       />
                     </Link>
                   </div>
 
                   {/* Judul berita (Menggunakan H1) */}
                   <h1
-                    className="fw-bold text-dark"
+                    className="fw-bold text-dark mt-3"
                     style={{ fontSize: '24px' }}
                   >
                     {item.title.replace(/<[^>]+>/g, '')}{' '}

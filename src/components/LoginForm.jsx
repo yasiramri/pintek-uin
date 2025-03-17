@@ -36,7 +36,11 @@ export default function LoginForm() {
         throw new Error('Token is undefined');
       }
 
+      // Simpan token ke localStorage
       localStorage.setItem('token', accessToken);
+      localStorage.setItem('refreshToken', refreshToken); // ⬅️ Simpan refresh token juga
+
+      // Redirect ke dashboard setelah login sukses
       window.location.href = '/dashboard';
     } catch (error) {
       console.error('Login Error:', error);

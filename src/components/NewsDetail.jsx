@@ -33,7 +33,6 @@ export default function NewsDetail() {
 
   return (
     <div>
-      <DashboardNavbar />
       <div className="container mt-5">
         <button className="btn btn-secondary mb-3" onClick={() => navigate(-1)}>
           ⬅ Kembali

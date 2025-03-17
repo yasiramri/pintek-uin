@@ -1,13 +1,44 @@
 /* components/DashboardNavbar.js */
 import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function DashboardNavbar() {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
+  const [loading, setLoading] = useState(false);
+
+  const handleLogout = async () => {
+    setLoading(true);
+    try {
+      const refreshToken = localStorage.getItem('refreshToken');
+
+      if (!refreshToken) {
+        console.error('No refresh token found');
+        navigate('/login');
+        return;
+      }
+
+      await axios.delete('http://localhost:8080/auth/logout', {
+        data: { refreshToken }, // ⬅️ Kirim refresh token ke backend
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      // Hapus token dari localStorage
+      localStorage.removeItem('token');
+      localStorage.removeItem('refreshToken');
+
+      // Redirect ke halaman login
+      navigate('/login');
+    } catch (error) {
+      console.error(
+        'Logout error:',
+        error.response?.data?.message || error.message
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -57,8 +88,9 @@ export default function DashboardNavbar() {
               <button
                 className="nav-link btn btn-link text-danger"
                 onClick={handleLogout}
+                disabled={loading} // Nonaktifkan tombol saat logout
               >
-                Logout
+                {loading ? 'Logging out...' : 'Logout'}
               </button>
             </li>
           </ul>

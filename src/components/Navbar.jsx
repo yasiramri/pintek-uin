@@ -70,6 +70,11 @@ function Navbar() {
               </ul>
             </li>
             <li className="nav-item">
+              <Link className="nav-link biru" to="/news">
+                News
+              </Link>
+            </li>
+            <li className="nav-item">
               <Link className="nav-link biru" to="/contact">
                 Contact
               </Link>

@@ -18,20 +18,28 @@ export default function DashboardNews() {
   const [categoryId, setCategoryId] = useState('');
   const [isFeatured, setIsFeatured] = useState(false);
   const [newCategory, setNewCategory] = useState('');
-  const [addingCategory, setAddingCategory] = useState(false);
+  const [addingCategory, setAddingCategory] = useState(false); // Menampilkan input tambah kategori
+  const [editCategory, setEditCategory] = useState(null);
+  const [newCategoryName, setNewCategoryName] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredNews, setFilteredNews] = useState([]);
 
-  const quillTitleModules = {
-    toolbar: [['header', 'bold', 'italic', 'underline']], // Header memungkinkan pengguna memilih H1
-  };
+  useEffect(() => {
+    fetchNews();
+    fetchCategories();
+  }, []);
 
-  const quillContentModules = {
-    toolbar: [
-      [{ header: [1, 2, 3, false] }],
-      ['bold', 'italic', 'underline'],
-      [{ list: 'ordered' }, { list: 'bullet' }],
-      ['link', 'image'],
-    ],
-  };
+  useEffect(() => {
+    fetchNews();
+  }, []);
+
+  useEffect(() => {
+    setFilteredNews(
+      news.filter((item) =>
+        item.title.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    );
+  }, [searchQuery, news]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -66,6 +74,85 @@ export default function DashboardNews() {
     }
   };
 
+  const handleAddCategory = async () => {
+    if (!newCategory.trim()) {
+      Swal.fire('Error', 'Nama kategori tidak boleh kosong.', 'error');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post(
+        'http://localhost:8080/categories',
+        { name: newCategory },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      Swal.fire('Berhasil', 'Kategori berhasil ditambahkan!', 'success');
+      fetchCategories();
+      setCategoryId(response.data.id); // Pilih kategori baru yang baru ditambahkan
+      setAddingCategory(false); // Sembunyikan input
+      setNewCategory(''); // Reset input kategori baru
+    } catch (error) {
+      Swal.fire('Error', 'Gagal menambahkan kategori.', 'error');
+      console.error('Error adding category:', error);
+    }
+  };
+
+  const handleUpdateCategory = async () => {
+    if (!newCategoryName.trim()) {
+      Swal.fire('Error', 'Nama kategori tidak boleh kosong.', 'error');
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      await axios.put(
+        `http://localhost:8080/categories/${editCategory.id}`,
+        { name: newCategoryName },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      Swal.fire('Berhasil', 'Kategori berhasil diperbarui!', 'success');
+      setEditCategory(null);
+      setNewCategoryName('');
+      fetchCategories();
+    } catch (error) {
+      Swal.fire('Error', 'Gagal memperbarui kategori.', 'error');
+      console.error('Error updating category:', error);
+    }
+  };
+
+  const handleDeleteCategory = async (categoryId) => {
+    Swal.fire({
+      title: 'Apakah Anda yakin?',
+      text: 'Kategori ini akan dihapus!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Ya, hapus!',
+      cancelButtonText: 'Batal',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const token = localStorage.getItem('token');
+          await axios.delete(`http://localhost:8080/categories/${categoryId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          Swal.fire('Dihapus!', 'Kategori telah dihapus.', 'success');
+          fetchCategories();
+        } catch (error) {
+          Swal.fire('Error', 'Gagal menghapus kategori.', 'error');
+          console.error('Error deleting category:', error);
+        }
+      }
+    });
+  };
+
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
@@ -82,7 +169,7 @@ export default function DashboardNews() {
 
     setUploading(true);
     const formData = new FormData();
-    formData.append('title', `<h1>${title}</h1>`); // Pastikan judul tersimpan dalam format H1
+    formData.append('title', title);
     formData.append('content', content);
     formData.append('image', selectedFile);
     formData.append('categoryId', categoryId);
@@ -117,45 +204,160 @@ export default function DashboardNews() {
     setSelectedFile(null);
   };
 
+  const handleEdit = (id) => {
+    navigate(`/dashboard/edit-news/${id}`);
+  };
+
+  const handleDelete = async (id) => {
+    Swal.fire({
+      title: 'Apakah Anda yakin?',
+      text: 'Berita akan dihapus secara permanen!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Ya, hapus!',
+      cancelButtonText: 'Batal',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const token = localStorage.getItem('token');
+          await axios.delete(`http://localhost:8080/news/${id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          Swal.fire('Dihapus!', 'Berita telah dihapus.', 'success');
+          fetchNews();
+        } catch (error) {
+          Swal.fire('Error', 'Gagal menghapus berita.', 'error');
+          console.error('Error deleting news:', error);
+        }
+      }
+    });
+  };
+
   return (
     <div>
       <DashboardNavbar />
       <div className="container mt-5">
         <h2>Dashboard - Kelola Berita</h2>
 
+        {/* Form Tambah Berita */}
         <div className="card p-4 mt-3">
           <h4>{editingNews ? 'Edit Berita' : 'Tambah Berita'}</h4>
-
-          {/* Quill Editor untuk Judul dengan format H1 */}
-          <label className="fw-bold">Judul Berita</label>
-          <ReactQuill
-            value={title}
-            onChange={setTitle}
-            modules={quillTitleModules}
-            className="mb-2"
-          />
-
-          {/* Quill Editor untuk Konten Berita */}
-          <label className="fw-bold">Konten Berita</label>
-          <ReactQuill
-            value={content}
-            onChange={setContent}
-            modules={quillContentModules}
-            className="mb-2"
-          />
-
-          <select
+          <input
+            type="text"
             className="form-control mb-2"
-            value={categoryId}
-            onChange={(e) => setCategoryId(e.target.value)}
-          >
-            <option value="">Pilih Kategori</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
+            placeholder="Judul"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <ReactQuill value={content} onChange={setContent} className="mb-2" />
+
+          {/* Dropdown Kategori + Tambah, Edit, & Hapus Kategori */}
+          {addingCategory ? (
+            <div className="d-flex mb-2">
+              <input
+                type="text"
+                className="form-control me-2"
+                placeholder="Nama Kategori Baru"
+                value={newCategory}
+                onChange={(e) => setNewCategory(e.target.value)}
+              />
+              <button className="btn btn-success" onClick={handleAddCategory}>
+                Simpan
+              </button>
+              <button
+                className="btn btn-danger ms-2"
+                onClick={() => setAddingCategory(false)}
+              >
+                Batal
+              </button>
+            </div>
+          ) : (
+            <div className="mb-2">
+              <div className="d-flex gap-2">
+                <select
+                  className="form-control"
+                  value={categoryId}
+                  onChange={(e) => {
+                    if (e.target.value === 'new') {
+                      setAddingCategory(true);
+                    } else {
+                      setCategoryId(e.target.value);
+                    }
+                  }}
+                >
+                  <option value="">Pilih Kategori</option>
+                  {categories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                  <option value="new">+ Tambah Kategori Baru</option>
+                </select>
+
+                {/* Tombol Edit dan Hapus */}
+                <button
+                  className="btn btn-warning btn-sm"
+                  disabled={!categoryId}
+                  onClick={() => {
+                    const selectedCategory = categories.find(
+                      (cat) => cat.id == categoryId
+                    );
+                    setEditCategory(selectedCategory);
+                    setNewCategoryName(selectedCategory.name);
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  className="btn btn-danger btn-sm"
+                  disabled={!categoryId}
+                  onClick={() => handleDeleteCategory(categoryId)}
+                >
+                  Hapus
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Modal Edit Kategori */}
+          {editCategory && (
+            <div className="modal show d-block">
+              <div className="modal-dialog">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title">Edit Kategori</h5>
+                    <button
+                      className="btn-close"
+                      onClick={() => setEditCategory(null)}
+                    ></button>
+                  </div>
+                  <div className="modal-body">
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={newCategoryName}
+                      onChange={(e) => setNewCategoryName(e.target.value)}
+                    />
+                  </div>
+                  <div className="modal-footer">
+                    <button
+                      className="btn btn-secondary"
+                      onClick={() => setEditCategory(null)}
+                    >
+                      Batal
+                    </button>
+                    <button
+                      className="btn btn-success"
+                      onClick={handleUpdateCategory}
+                    >
+                      Simpan
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           <input
             type="file"
@@ -179,7 +381,7 @@ export default function DashboardNews() {
 
           <button
             className="btn btn-primary me-2"
-            onClick={handleSubmit}
+            onClick={editingNews ? handleUpdate : handleSubmit}
             disabled={uploading}
           >
             {uploading
@@ -188,6 +390,60 @@ export default function DashboardNews() {
               ? 'Update Berita'
               : 'Tambah Berita'}
           </button>
+        </div>
+
+        {/* Input Search */}
+        <div className="mb-3 mt-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Cari berita berdasarkan judul..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+
+        {/* List Berita dalam bentuk Card */}
+        <div className="row">
+          {filteredNews.length === 0 ? (
+            <p className="text-center">Tidak ada berita ditemukan.</p>
+          ) : (
+            filteredNews.map((item) => (
+              <div className="col-md-4 mb-4" key={item.id}>
+                <div className="card shadow-sm">
+                  <img
+                    src={`http://localhost:8080/uploads/newsImages/${item.imagePath
+                      .split('/')
+                      .pop()}`}
+                    className="card-img-top"
+                    alt={item.title}
+                    style={{ height: '200px', objectFit: 'cover' }}
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">{item.title}</h5>
+                    <p className="card-text">
+                      {item.content.replace(/<[^>]*>/g, '').substring(0, 100)}
+                      ...
+                    </p>
+                    <div className="d-flex justify-content-between">
+                      <button
+                        className="btn btn-warning btn-sm"
+                        onClick={() => handleEdit(item.id)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => handleDelete(item.id)}
+                      >
+                        Hapus
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>
