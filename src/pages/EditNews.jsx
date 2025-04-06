@@ -71,23 +71,18 @@ export default function EditNews() {
       formData.append('imagePath', image); // Kirim path lama sebagai pengganti
     }
 
-    try {
-      await api.put(`/news/${id}`, formData);
-      Swal.fire('Berhasil', 'Berita berhasil diperbarui!', 'success');
-      navigate('/dashboard');
-    } catch (error) {
-      console.error('Error response data:', error.response?.data);
-      Swal.fire('Error', 'Gagal memperbarui berita.', 'error');
+    console.log('FormData yang dikirim:');
+    for (let pair of formData.entries()) {
+      console.log(`${pair[0]}:`, pair[1]);
     }
 
     try {
       await api.put(`/news/${id}`, formData);
-
       Swal.fire('Berhasil', 'Berita berhasil diperbarui!', 'success');
-      navigate('/dashboard');
+      navigate('/dashboard/news');
     } catch (error) {
+      console.error('Error response data:', error.response?.data);
       Swal.fire('Error', 'Gagal memperbarui berita.', 'error');
-      console.error('Error updating news:', error);
     }
   };
 
