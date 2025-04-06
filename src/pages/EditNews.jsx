@@ -63,10 +63,21 @@ export default function EditNews() {
     formData.append('title', title);
     formData.append('content', content);
     formData.append('categoryId', categoryId);
-    formData.append('isFeatured', isFeatured);
+    formData.append('isFeatured', isFeatured ? 'true' : 'false');
 
     if (image instanceof File) {
       formData.append('image', image);
+    } else if (typeof image === 'string') {
+      formData.append('imagePath', image); // Kirim path lama sebagai pengganti
+    }
+
+    try {
+      await api.put(`/news/${id}`, formData);
+      Swal.fire('Berhasil', 'Berita berhasil diperbarui!', 'success');
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Error response data:', error.response?.data);
+      Swal.fire('Error', 'Gagal memperbarui berita.', 'error');
     }
 
     try {
@@ -198,7 +209,7 @@ export default function EditNews() {
                   src={
                     image instanceof File
                       ? URL.createObjectURL(image)
-                      : `https://pintek-rest-production.up.railway.app${image}`
+                      : `http://localhost:8080${image}`
                   }
                   alt="Preview"
                   style={{ maxWidth: '200px', maxHeight: '200px' }}
@@ -206,6 +217,23 @@ export default function EditNews() {
               </div>
             </div>
           )}
+
+          {/* Featured Toggle */}
+          <div className="form-check form-switch mb-3">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              id="featuredSwitch"
+              checked={isFeatured}
+              onChange={(e) => setIsFeatured(e.target.checked)}
+            />
+            <label
+              className="form-check-label fw-bold"
+              htmlFor="featuredSwitch"
+            >
+              Tandai sebagai Berita Unggulan
+            </label>
+          </div>
 
           {/* Tombol Simpan & Batal */}
           <div className="d-flex gap-2 mt-3">
