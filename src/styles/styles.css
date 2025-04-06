@@ -1,3 +1,22 @@
+@import 'tailwindcss';
+
+.nav-link {
+  @apply no-underline font-medium px-3 py-2 transition-colors;
+  color: #0a6fba;
+}
+
+.nav-link:hover {
+  color: #085f9b;
+}
+
+.dropdown-menu {
+  @apply absolute left-0 top-full mt-2 w-52 bg-white border border-gray-200 rounded-md shadow-lg z-50 hidden;
+}
+
+.dropdown-item {
+  @apply block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition;
+}
+
 * {
   padding: 0;
   margin: 0;
@@ -9,24 +28,29 @@ body {
   width: 100%;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 /* styles/Login.css */
+/* login.css */
 .login-container {
+  min-height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
-  background-color: #f8f9fa;
-  padding: 50px 0; /* Tambahkan padding agar tidak terlalu menekan ke atas */
+  align-items: center;
+  background-image: url('/images/bg-login.png'); /* Pastikan gambar ada di /public/images */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .login-card {
-  width: 100%;
-  max-width: 400px; /* Batasi lebar card login */
-  padding: 20px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.85); /* Semi-transparent white */
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  min-width: 350px;
 }
 
 .login-form {
@@ -38,43 +62,6 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 10px 20px;
-}
-
-/* Dropdown styles */
-.biru {
-  color: #0a6fba !important;
-}
-
-.navbar .nav-link:hover {
-  color: #075a9b !important;
-}
-
-.navbar-toggler {
-  border-color: #0a6fba !important;
-}
-
-.navbar-toggler-icon {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(10, 111, 186, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
-}
-
-/* Pastikan menu dropdown bisa muncul */
-.navbar-collapse {
-  transition: all 0.3s ease-in-out;
-}
-
-.navbar-toggler:focus,
-.navbar-toggler:active {
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-.dropdown-menu .dropdown-item {
-  color: #0a6fba !important;
-}
-
-.dropdown-menu .dropdown-item:hover {
-  background-color: #e3f2fd !important;
-  color: #075a9b !important;
 }
 
 .logo img {
@@ -215,6 +202,30 @@ body {
 
 .news-image:hover {
   transform: scale(1.05);
+}
+
+select.form-select {
+  appearance: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: white;
+}
+
+/* Tampilkan panah dan beri style agar kelihatan */
+.slick-prev,
+.slick-next {
+  z-index: 1;
+  display: block !important;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: #1e3a8a;
+  font-size: 20px;
 }
 
 .badge-category {

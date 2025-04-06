@@ -28,9 +28,12 @@ export default function EditNews() {
   const fetchNewsById = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:8080/news/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        `https://pintek-rest-production.up.railway.app/news/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       const { title, content, category, isFeatured, imagePath } = response.data;
       setTitle(title);
@@ -46,9 +49,12 @@ export default function EditNews() {
   const fetchCategories = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8080/categories', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        'https://pintek-rest-production.up.railway.app/categories',
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);
@@ -77,12 +83,16 @@ export default function EditNews() {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:8080/news/${id}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.put(
+        `https://pintek-rest-production.up.railway.app/news/${id}`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       Swal.fire('Berhasil', 'Berita berhasil diperbarui!', 'success');
       navigate('/dashboard');
@@ -101,7 +111,7 @@ export default function EditNews() {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:8080/categories',
+        'https://pintek-rest-production.up.railway.app/categories',
         { name: newCategory },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -128,7 +138,7 @@ export default function EditNews() {
     try {
       const token = localStorage.getItem('token');
       await axios.put(
-        `http://localhost:8080/categories/${editCategory.id}`,
+        `https://pintek-rest-production.up.railway.app/categories/${editCategory.id}`,
         { name: newCategoryName },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -157,9 +167,12 @@ export default function EditNews() {
       if (result.isConfirmed) {
         try {
           const token = localStorage.getItem('token');
-          await axios.delete(`http://localhost:8080/categories/${categoryId}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
+          await axios.delete(
+            `https://pintek-rest-production.up.railway.app/categories/${categoryId}`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
 
           Swal.fire('Dihapus!', 'Kategori telah dihapus.', 'success');
           fetchCategories();

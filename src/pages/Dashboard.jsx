@@ -1,19 +1,19 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import DashboardNavbar from "../components/DashboardNavbar";
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import DashboardNavbar from '../components/DashboardNavbar';
 
 export default function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     if (!token) {
-      navigate("/login");
+      navigate('/login');
     }
   }, [navigate]);
 
   return (
-    <div>
+    <div className="d-flex">
       <DashboardNavbar />
       <div className="container mt-5">
         <h2>Dashboard</h2>

@@ -24,7 +24,7 @@ export default function LoginForm() {
     clearErrors();
     try {
       const response = await axios.post(
-        'http://localhost:8080/auth/login',
+        'https://pintek-rest-production.up.railway.app/auth/login',
         data
       );
       console.log('Login response:', response.data);

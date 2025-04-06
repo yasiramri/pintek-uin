@@ -1,5 +1,6 @@
 import React from 'react';
 import NewsFeatured from '../components/NewsFeatured';
+import NewsByCategorySlider from '../components/NewsByCategorySlider';
 
 function Home() {
   return (
@@ -16,6 +17,9 @@ function Home() {
       </div>
       <div className="container mt-5">
         <NewsFeatured />
+      </div>
+      <div className="container mt-3">
+        <NewsByCategorySlider categoryName={'IoT'} />
       </div>
     </div>
   );

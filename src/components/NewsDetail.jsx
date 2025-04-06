@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import DashboardNavbar from '../components/DashboardNavbar';
 
 export default function NewsDetail() {
   const { id } = useParams();
@@ -16,9 +15,12 @@ export default function NewsDetail() {
   const fetchNewsDetail = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:8080/news/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(
+        `https://pintek-rest-production.up.railway.app/news/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setNews(response.data);
     } catch (error) {
       console.error('Error fetching news detail:', error);
@@ -43,9 +45,9 @@ export default function NewsDetail() {
             dangerouslySetInnerHTML={{ __html: news.title }}
           />
           <img
-            src={`http://localhost:8080/uploads/newsImages/${news.imagePath
-              .split('/')
-              .pop()}`}
+            src={`https://pintek-rest-production.up.railway.app/uploads/newsImages/${
+              news.imagePath?.split('/').pop() || '404.png'
+            }`}
             alt={news.title}
             className="img-fluid rounded mb-3"
           />

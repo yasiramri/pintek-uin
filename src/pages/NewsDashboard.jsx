@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DashboardNavbar from '../components/DashboardNavbar';
-import axios from 'axios';
 import Swal from 'sweetalert2';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import api from '../utils/axios';
+import Select from 'react-select';
 
 export default function DashboardNews() {
   const navigate = useNavigate();
@@ -50,12 +51,36 @@ export default function DashboardNews() {
     fetchCategories();
   }, [navigate]);
 
+  const quillModules = {
+    toolbar: [
+      [{ header: [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ indent: '-1' }, { indent: '+1' }],
+      [{ align: [] }],
+      ['link', 'image', 'video'],
+      ['clean'],
+    ],
+  };
+
+  const quillFormats = [
+    'header',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'list',
+    'bullet',
+    'indent',
+    'align',
+    'link',
+    'image',
+    'video',
+  ];
+
   const fetchNews = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8080/news', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await api.get('/news');
       setNews(response.data);
     } catch (error) {
       console.error('Error fetching news:', error);
@@ -64,10 +89,7 @@ export default function DashboardNews() {
 
   const fetchCategories = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:8080/categories', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await api.get('/categories');
       setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);
@@ -81,14 +103,7 @@ export default function DashboardNews() {
     }
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.post(
-        'http://localhost:8080/categories',
-        { name: newCategory },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await api.post('/categories', { name: newCategory });
 
       Swal.fire('Berhasil', 'Kategori berhasil ditambahkan!', 'success');
       fetchCategories();
@@ -108,14 +123,9 @@ export default function DashboardNews() {
     }
 
     try {
-      const token = localStorage.getItem('token');
-      await axios.put(
-        `http://localhost:8080/categories/${editCategory.id}`,
-        { name: newCategoryName },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await api.put(`/categories/${editCategory.id}`, {
+        name: newCategoryName,
+      });
 
       Swal.fire('Berhasil', 'Kategori berhasil diperbarui!', 'success');
       setEditCategory(null);
@@ -138,11 +148,7 @@ export default function DashboardNews() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const token = localStorage.getItem('token');
-          await axios.delete(`http://localhost:8080/categories/${categoryId}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-
+          await api.delete(`/categories/${categoryId}`);
           Swal.fire('Dihapus!', 'Kategori telah dihapus.', 'success');
           fetchCategories();
         } catch (error) {
@@ -158,10 +164,10 @@ export default function DashboardNews() {
   };
 
   const handleSubmit = async () => {
-    if (!title || !content || !selectedFile || !categoryId) {
+    if (!title || !content || !categoryId) {
       Swal.fire(
         'Error',
-        'Harap isi semua bidang termasuk gambar, judul, konten, dan kategori.',
+        'Harap isi judul, konten, dan kategori. (Gambar opsional)',
         'error'
       );
       return;
@@ -171,16 +177,18 @@ export default function DashboardNews() {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('content', content);
-    formData.append('image', selectedFile);
     formData.append('categoryId', categoryId);
-    formData.append('isFeatured', isFeatured);
+    formData.append('isFeatured', isFeatured ? 'true' : 'false');
+
+    // Hanya kirim image jika dipilih
+    if (selectedFile) {
+      formData.append('image', selectedFile);
+    }
 
     try {
-      const token = localStorage.getItem('token');
-      await axios.post('http://localhost:8080/news', formData, {
+      await api.post('/news', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -219,10 +227,7 @@ export default function DashboardNews() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const token = localStorage.getItem('token');
-          await axios.delete(`http://localhost:8080/news/${id}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
+          await api.delete(`/news/${id}`);
 
           Swal.fire('Dihapus!', 'Berita telah dihapus.', 'success');
           fetchNews();
@@ -235,7 +240,7 @@ export default function DashboardNews() {
   };
 
   return (
-    <div>
+    <div className="d-flex">
       <DashboardNavbar />
       <div className="container mt-5">
         <h2>Dashboard - Kelola Berita</h2>
@@ -250,7 +255,13 @@ export default function DashboardNews() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
-          <ReactQuill value={content} onChange={setContent} className="mb-2" />
+          <ReactQuill
+            value={content}
+            onChange={setContent}
+            modules={quillModules}
+            formats={quillFormats}
+            className="mb-2"
+          />
 
           {/* Dropdown Kategori + Tambah, Edit, & Hapus Kategori */}
           {addingCategory ? (
@@ -274,28 +285,52 @@ export default function DashboardNews() {
             </div>
           ) : (
             <div className="mb-2">
-              <div className="d-flex gap-2">
-                <select
-                  className="form-control"
-                  value={categoryId}
-                  onChange={(e) => {
-                    if (e.target.value === 'new') {
-                      setAddingCategory(true);
-                    } else {
-                      setCategoryId(e.target.value);
+              <div className="d-flex gap-2 mb-2">
+                <div style={{ flex: 1 }}>
+                  <Select
+                    options={[
+                      { value: '', label: 'Pilih Kategori' },
+                      ...categories.map((category) => ({
+                        value: category.id,
+                        label: category.name,
+                      })),
+                      { value: 'new', label: '+ Tambah Kategori Baru' },
+                    ]}
+                    value={
+                      categories.find((cat) => cat.id === categoryId)
+                        ? {
+                            value: categoryId,
+                            label: categories.find(
+                              (cat) => cat.id === categoryId
+                            )?.name,
+                          }
+                        : null
                     }
-                  }}
-                >
-                  <option value="">Pilih Kategori</option>
-                  {categories.map((category) => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
-                  ))}
-                  <option value="new">+ Tambah Kategori Baru</option>
-                </select>
+                    onChange={(selectedOption) => {
+                      if (selectedOption.value === 'new') {
+                        setAddingCategory(true);
+                      } else {
+                        setCategoryId(selectedOption.value);
+                      }
+                    }}
+                    placeholder="Pilih Kategori"
+                    styles={{
+                      control: (base) => ({
+                        ...base,
+                        height: 40,
+                        borderRadius: 8,
+                        paddingLeft: 4,
+                        borderColor: '#ced4da',
+                        boxShadow: 'none',
+                      }),
+                      menu: (base) => ({
+                        ...base,
+                        zIndex: 9999,
+                      }),
+                    }}
+                  />
+                </div>
 
-                {/* Tombol Edit dan Hapus */}
                 <button
                   className="btn btn-warning btn-sm"
                   disabled={!categoryId}
@@ -412,13 +447,14 @@ export default function DashboardNews() {
               <div className="col-md-4 mb-4" key={item.id}>
                 <div className="card shadow-sm">
                   <img
-                    src={`http://localhost:8080/uploads/newsImages/${item.imagePath
-                      .split('/')
-                      .pop()}`}
+                    src={`https://pintek-rest-production.up.railway.app/uploads/newsImages/${
+                      item.imagePath?.split('/').pop() || '404.png'
+                    }`}
                     className="card-img-top"
                     alt={item.title}
                     style={{ height: '200px', objectFit: 'cover' }}
                   />
+
                   <div className="card-body">
                     <h5 className="card-title">{item.title}</h5>
                     <p className="card-text">

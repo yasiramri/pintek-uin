@@ -1,78 +1,94 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Link } from 'react-router-dom';
 
-export default function NewsComponent() {
-  const [news, setNews] = useState([]);
+export default function News() {
+  const [newsList, setNewsList] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchNews();
+    fetchAllNews();
   }, []);
 
-  const fetchNews = async () => {
+  const fetchAllNews = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/news');
-      const sortedNews = response.data.sort(
+      const response = await axios.get(
+        'https://pintek-rest-production.up.railway.app/news'
+      );
+      const sorted = response.data.sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
-      setNews(sortedNews);
+      setNewsList(sorted);
     } catch (error) {
-      console.error('Error fetching news:', error);
+      console.error('Gagal mengambil berita:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading) {
-    return <div className="text-center mt-4">Loading news...</div>;
-  }
+  if (loading) return <p className="text-center mt-4">Memuat berita...</p>;
+  if (newsList.length === 0)
+    return <p className="text-center mt-4">Belum ada berita.</p>;
+
+  const highlight = newsList[0];
+  const sideList = newsList.slice(1, 9); // Ambil 4 berita setelah highlight
+
+  const getImage = (path) =>
+    `https://pintek-rest-production.up.railway.app/uploads/newsImages/${
+      path?.split('/').pop() || '404.png'
+    }`;
 
   return (
-    <div className="container mt-5">
-      <div className="row" style={{ fontSize: '16px' }}>
-        {news.slice(0, 2).map((item, index) => (
-          <div
-            className="col-12 col-md-6"
-            key={item.id}
-            style={{ fontSize: '16px' }}
+    <div className="container mt-4">
+      <div className="row">
+        {/* Highlight */}
+        <div className="col-md-8 mb-4">
+          <Link
+            to={`/news/${highlight.id}`}
+            className="text-decoration-none text-dark"
           >
-            <div className="row" style={{ fontSize: '16px' }}>
-              <div
-                className="col mb-2 card-top-news"
-                style={{ fontSize: '16px' }}
-              >
-                <h2 className="title mb-3" style={{ fontSize: '12.8px' }}>
-                  {index === 0 ? 'Technology' : 'Sains'}
-                </h2>
-                <div
-                  className="text-black bg-body-secondary mb-3 text-center post-images header-images"
-                  style={{ fontSize: '16px' }}
+            <img
+              src={getImage(highlight.imagePath)}
+              alt={highlight.title}
+              className="img-fluid rounded mb-3"
+            />
+            <p className="text-danger fw-bold">
+              {highlight.category?.name || 'Kategori'}
+            </p>
+            <h3 className="fw-bold">{highlight.title}</h3>
+          </Link>
+        </div>
+
+        {/* Side list */}
+        <div className="col-md-4">
+          {sideList.map((item) => (
+            <Link
+              to={`/news/${item.id}`}
+              key={item.id}
+              className="d-flex mb-3 text-decoration-none text-dark"
+            >
+              <img
+                src={getImage(item.imagePath)}
+                alt={item.title}
+                className="me-3 rounded"
+                style={{ width: '100px', height: '70px', objectFit: 'cover' }}
+              />
+              <div>
+                <p
+                  className="text-danger fw-bold mb-1"
+                  style={{ fontSize: '14px' }}
                 >
-                  <a
-                    href={`/news/${item.id}`}
-                    title={item.title}
-                    style={{ fontSize: '16px' }}
-                  >
-                    <img
-                      className="img-fluid news-image"
-                      src={`http://localhost:8080/uploads/newsImages/${item.imagePath
-                        .split('/')
-                        .pop()}`}
-                      alt={item.title}
-                    />
-                  </a>
-                </div>
-                <h3 className="fs-6 fw-semibold" style={{ fontSize: '16px' }}>
-                  {item.title}
-                </h3>
-                <p style={{ fontSize: '14.24px' }}>
-                  {item.content.substring(0, 300)}...
+                  {item.category?.name || 'Kategori'}
+                </p>
+                <p className="fw-semibold mb-0" style={{ fontSize: '15px' }}>
+                  {item.title.length > 60
+                    ? item.title.slice(0, 60) + '...'
+                    : item.title}
                 </p>
               </div>
-            </div>
-          </div>
-        ))}
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );

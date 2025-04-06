@@ -11,11 +11,13 @@ const NewsFeatured = () => {
 
   const fetchFeaturedNews = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/news');
+      const response = await axios.get(
+        'https://pintek-rest-production.up.railway.app/news'
+      );
       const filteredNews = response.data
-        .filter((item) => item.isFeatured) // Hanya berita unggulan
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Urutkan dari terbaru
-        .slice(0, 2); // Ambil 2 berita unggulan terbaru
+        .filter((item) => item.isFeatured === true) // Pastikan nilai true (bukan hanya truthy)
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .slice(0, 2);
 
       setFeaturedNews(filteredNews);
     } catch (error) {
@@ -31,6 +33,7 @@ const NewsFeatured = () => {
 
   return (
     <div className="container mt-5">
+      <h2 className="mb-3">Berita Utama</h2>
       <div className="row" style={{ fontSize: '16px' }}>
         {featuredNews.length === 0 ? (
           <p className="text-center">Tidak ada berita unggulan.</p>
@@ -58,9 +61,9 @@ const NewsFeatured = () => {
                     <Link to={`/news/${item.id}`} title={item.title}>
                       <img
                         className="news-image"
-                        src={`http://localhost:8080/uploads/newsImages/${item.imagePath
-                          .split('/')
-                          .pop()}`}
+                        src={`https://pintek-rest-production.up.railway.app/uploads/newsImages/${
+                          item.imagePath?.split('/').pop() || '404.png'
+                        }`}
                         alt={item.title}
                       />
                     </Link>

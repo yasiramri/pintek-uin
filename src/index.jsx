@@ -1,13 +1,15 @@
-import React from "react";
-import { createRoot } from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";  // Import CSS Bootstrap
-import "bootstrap/dist/js/bootstrap.bundle.min.js";  // Import JS Bootstrap
-import App from "./app";
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Import CSS Bootstrap
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Import JS Bootstrap
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import App from './app';
 
-import "./styles/styles.css";
+import './styles/styles.css';
 
-const root = createRoot(document.getElementById("root"));
+const root = createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
     <App />
