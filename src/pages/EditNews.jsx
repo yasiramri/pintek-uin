@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import api from '../utils/axios';
 import Swal from 'sweetalert2';
 import DashboardNavbar from '../components/DashboardNavbar';
 import ReactQuill from 'react-quill';
@@ -27,13 +27,7 @@ export default function EditNews() {
 
   const fetchNewsById = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get(
-        `https://pintek-rest-production.up.railway.app/news/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await api.get(`/news/${id}`);
 
       const { title, content, category, isFeatured, imagePath } = response.data;
       setTitle(title);
@@ -48,13 +42,7 @@ export default function EditNews() {
 
   const fetchCategories = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get(
-        'https://pintek-rest-production.up.railway.app/categories',
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await api.get('/categories');
       setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);
@@ -82,17 +70,7 @@ export default function EditNews() {
     }
 
     try {
-      const token = localStorage.getItem('token');
-      await axios.put(
-        `https://pintek-rest-production.up.railway.app/news/${id}`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await api.put(`/news/${id}`, formData);
 
       Swal.fire('Berhasil', 'Berita berhasil diperbarui!', 'success');
       navigate('/dashboard');
@@ -109,14 +87,7 @@ export default function EditNews() {
     }
 
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.post(
-        'https://pintek-rest-production.up.railway.app/categories',
-        { name: newCategory },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await api.post('/categories', { name: newCategory });
 
       Swal.fire('Berhasil', 'Kategori berhasil ditambahkan!', 'success');
       fetchCategories();
@@ -136,14 +107,9 @@ export default function EditNews() {
     }
 
     try {
-      const token = localStorage.getItem('token');
-      await axios.put(
-        `https://pintek-rest-production.up.railway.app/categories/${editCategory.id}`,
-        { name: newCategoryName },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await api.put(`/categories/${editCategory.id}`, {
+        name: newCategoryName,
+      });
 
       Swal.fire('Berhasil', 'Kategori berhasil diperbarui!', 'success');
       setEditCategory(null);
@@ -166,13 +132,7 @@ export default function EditNews() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const token = localStorage.getItem('token');
-          await axios.delete(
-            `https://pintek-rest-production.up.railway.app/categories/${categoryId}`,
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          );
+          await api.delete(`/categories/${categoryId}`);
 
           Swal.fire('Dihapus!', 'Kategori telah dihapus.', 'success');
           fetchCategories();
@@ -219,6 +179,33 @@ export default function EditNews() {
               </option>
             ))}
           </select>
+
+          {/* Gambar */}
+          <label className="fw-bold">Gambar</label>
+          <input
+            type="file"
+            accept="image/*"
+            className="form-control mb-2"
+            onChange={handleFileChange}
+          />
+
+          {/* Preview gambar lama atau yang dipilih */}
+          {image && (
+            <div className="mb-2">
+              <label className="fw-bold">Preview Gambar</label>
+              <div>
+                <img
+                  src={
+                    image instanceof File
+                      ? URL.createObjectURL(image)
+                      : `https://pintek-rest-production.up.railway.app${image}`
+                  }
+                  alt="Preview"
+                  style={{ maxWidth: '200px', maxHeight: '200px' }}
+                />
+              </div>
+            </div>
+          )}
 
           {/* Tombol Simpan & Batal */}
           <div className="d-flex gap-2 mt-3">
