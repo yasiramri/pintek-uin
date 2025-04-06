@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="footer-section footer-logo-text w-full sm:w-1/2 lg:w-1/4">
           <div className="foot-logo">
             <img
-              src="/public/images/logo-footer.png"
+              src="/images/logo-footer.png"
               alt="Logo"
               className="footer-logo"
             />

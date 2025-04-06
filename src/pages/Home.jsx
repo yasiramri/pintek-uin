@@ -7,7 +7,7 @@ function Home() {
     <div>
       <div className="image-container">
         <img
-          src="/public/images/image 2.png"
+          src="/images/image-2.png"
           alt="background"
           className="background-image"
         />
