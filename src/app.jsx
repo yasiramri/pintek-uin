@@ -42,7 +42,7 @@ function App() {
           if (error.response?.status === 401) {
             try {
               const res = await axios.post(
-                'https://pintek-rest-production.up.railway.app/auth/refresh',
+                'https://pintek-rest-production.up.railway.app/auth/token',
                 {
                   refreshToken,
                 }
@@ -71,7 +71,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/tentangkami" element={<Profile />} />
-          <Route path="/auth/login" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/struktur-organisasi" element={<StrukturOrganisasi />} />
           <Route path="/news" element={<News />} />
           <Route path="/news/:id" element={<NewsDetail />} />
