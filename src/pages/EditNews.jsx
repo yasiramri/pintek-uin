@@ -239,7 +239,7 @@ export default function EditNews() {
           <div className="d-flex gap-2 mt-3">
             <button
               className="btn btn-secondary"
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate('/dashboard/news')}
             >
               Batal Edit
             </button>
