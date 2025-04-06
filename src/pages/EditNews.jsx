@@ -204,7 +204,7 @@ export default function EditNews() {
                   src={
                     image instanceof File
                       ? URL.createObjectURL(image)
-                      : `http://localhost:8080${image}`
+                      : `https://pintek-rest-production.up.railway.app${image}`
                   }
                   alt="Preview"
                   style={{ maxWidth: '200px', maxHeight: '200px' }}
