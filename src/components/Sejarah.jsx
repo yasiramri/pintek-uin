@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 function Sejarah() {
   return (
@@ -19,7 +19,7 @@ function Sejarah() {
           dalam menghadirkan solusi teknologi yang relevan dengan tantangan
           zaman.
         </p>
-        <img src="/images/image 16.png" alt="foto" />
+        <img src="/images/image-16.png" alt="foto" />
       </div>
     </div>
   );
