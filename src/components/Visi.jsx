@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
 function Visi() {
   return (
     <div className="visi-container">
-      <img src="/images/image 17.png" alt="" />
+      <img src="/images/image-17.png" alt="" />
       <div className="misi-container">
         <div className="visi">
           <h1>VISI PINTEK UIN Jakarta </h1>
