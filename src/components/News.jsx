@@ -52,7 +52,7 @@ export default function News() {
               alt={highlight.title}
               className="img-fluid rounded mb-3"
             />
-            <p className="text-danger fw-bold">
+            <p className="text-primary fw-bold">
               {highlight.category?.name || 'Kategori'}
             </p>
             <h3 className="fw-bold">{highlight.title}</h3>
@@ -60,7 +60,11 @@ export default function News() {
         </div>
 
         {/* Side list */}
-        <div className="col-md-4">
+        {/* Side list */}
+        <div
+          className="col-md-4"
+          style={{ maxHeight: '500px', overflowY: 'auto' }}
+        >
           {sideList.map((item) => (
             <Link
               to={`/news/${item.id}`}
@@ -75,7 +79,7 @@ export default function News() {
               />
               <div>
                 <p
-                  className="text-danger fw-bold mb-1"
+                  className="text-primary fw-bold mb-1"
                   style={{ fontSize: '14px' }}
                 >
                   {item.category?.name || 'Kategori'}

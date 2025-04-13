@@ -77,7 +77,7 @@ const NewsByCategorySlider = ({ categoryName }) => {
                 </Link>
 
                 {/* Kategori */}
-                <span className="text-danger fw-bold mt-2">
+                <span className="text-primary fw-bold mt-2">
                   {item.category?.name}
                 </span>
 

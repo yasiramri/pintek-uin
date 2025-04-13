@@ -8,8 +8,9 @@ export default function News() {
     <div className="container mt-5">
       <div>
         <NewsComponent />
-        <NewsFeatured />
         <NewsByCategorySlider categoryName={'IoT'} />
+        <NewsByCategorySlider categoryName={'Science'} />
+        <NewsByCategorySlider categoryName={'Artificial Intelligence'} />
       </div>
     </div>
   );
