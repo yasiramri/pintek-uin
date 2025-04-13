@@ -72,7 +72,11 @@ const NewsByCategorySlider = ({ categoryName }) => {
                     }`}
                     alt={item.title}
                     className="img-fluid rounded"
-                    style={{ maxHeight: '180px', objectFit: 'cover' }}
+                    style={{
+                      width: '100%',
+                      height: '200px',
+                      objectFit: 'cover',
+                    }}
                   />
                 </Link>
 
