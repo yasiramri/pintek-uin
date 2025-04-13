@@ -79,8 +79,8 @@ const Struktur = () => {
   const timPendukung = findAllByPrefix('Kadiv');
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4 flex flex-col items-center">
-      <h1 className="text-3xl font-bold text-center mb-2 text-gray-800">
+    <div className="min-h-screen py-10 px-4 flex flex-col items-center">
+      <h1 className="text-3xl font-bold text-center mb-2 text-gray-800 mt-4">
         Struktur Organisasi
       </h1>
       <p className="text-center mb-6 text-gray-600 max-w-xl">
