@@ -212,6 +212,21 @@ select.form-select {
   background-color: white;
 }
 
+.article-content br {
+  margin-bottom: 0 !important;
+  display: block;
+  line-height: 1.2; /* atur sesuai kebutuhan */
+}
+
+.article-content p {
+  margin-bottom: 0.25rem; /* atau 0.5rem kalau masih terlalu jauh */
+}
+
+.article-content ul {
+  list-style: disc;
+  margin-left: 1.5rem;
+}
+
 /* Tampilkan panah dan beri style agar kelihatan */
 .slick-prev,
 .slick-next {

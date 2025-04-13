@@ -85,15 +85,15 @@ export default function NewsDetail() {
         dangerouslySetInnerHTML={{ __html: news.content }}
       />
 
-      {news.isFeatured && (
+      {/* {news.isFeatured && (
         <div className="alert alert-warning mt-4">
           🔥 <strong>Berita Unggulan</strong> – Artikel ini dipilih sebagai
           sorotan penting.
         </div>
-      )}
+      )} */}
 
       {/* Social Share */}
-      <div className="mt-3">
+      {/* <div className="mt-3">
         <small className="text-muted me-2">Share:</small>
         <a href="#" className="me-2 text-decoration-none">
           🐦
@@ -107,7 +107,7 @@ export default function NewsDetail() {
         <a href="#" className="text-decoration-none">
           💼
         </a>
-      </div>
+      </div> */}
     </div>
   );
 }
