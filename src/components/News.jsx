@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { BiSearch } from 'react-icons/bi';
 
 export default function News() {
   const [newsList, setNewsList] = useState([]);
@@ -49,13 +50,18 @@ export default function News() {
       {/* Input Pencarian */}
       <div className="row mb-4">
         <div className="col-12">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Cari berita berdasarkan judul..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+          <div className="input-group">
+            <span className="input-group-text bg-white border-end-0">
+              <BiSearch size={20} />
+            </span>
+            <input
+              type="text"
+              className="form-control border-start-0"
+              placeholder="Cari artikel berdasarkan judul..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
         </div>
       </div>
 

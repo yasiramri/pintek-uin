@@ -33,7 +33,7 @@ const NewsFeatured = () => {
 
   return (
     <div className="container mt-5">
-      <h2 className="mb-3">Berita Utama</h2>
+      <h2 className="mb-3">Artikel Utama</h2>
       <div className="row" style={{ fontSize: '16px' }}>
         {featuredNews.length === 0 ? (
           <p className="text-center">Tidak ada berita unggulan.</p>

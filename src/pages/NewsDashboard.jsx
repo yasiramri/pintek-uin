@@ -6,6 +6,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import api from '../utils/axios';
 import Select from 'react-select';
+import { BiSearch } from 'react-icons/bi';
 
 export default function DashboardNews() {
   const navigate = useNavigate();
@@ -428,14 +429,21 @@ export default function DashboardNews() {
         </div>
 
         {/* Input Search */}
-        <div className="mb-3 mt-3">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Cari berita berdasarkan judul..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+        <div className="row mb-2 mt-4">
+          <div className="col-12">
+            <div className="input-group">
+              <span className="input-group-text bg-white border-end-0">
+                <BiSearch size={20} />
+              </span>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Cari artikel yang akan diedit"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+          </div>
         </div>
 
         {/* List Berita dalam bentuk Card */}

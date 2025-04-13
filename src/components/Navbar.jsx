@@ -88,7 +88,7 @@ function Navbar() {
       {menuOpen && (
         <div className="md:hidden px-4 pb-4 space-y-2">
           <Link to="/" className="nav-link block">
-            Home
+            Beranda
           </Link>
           <div className="border-t pt-2">
             <button
@@ -118,10 +118,10 @@ function Navbar() {
             )}
           </div>
           <Link to="/news" className="nav-link block">
-            News
+            Artikel
           </Link>
           <Link to="/contact" className="nav-link block">
-            Contact
+            Kontak
           </Link>
         </div>
       )}
