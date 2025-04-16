@@ -78,7 +78,7 @@ function Navbar() {
               Artikel
             </Link>
             <Link to="/contact" className="nav-link">
-              Contact
+              Kontak
             </Link>
           </div>
         </div>
