@@ -78,11 +78,11 @@ export default function EditNews() {
 
     try {
       await api.put(`/news/${id}`, formData);
-      Swal.fire('Berhasil', 'Berita berhasil diperbarui!', 'success');
+      Swal.fire('Berhasil', 'Artikel berhasil diperbarui!', 'success');
       navigate('/dashboard/news');
     } catch (error) {
       console.error('Error response data:', error.response?.data);
-      Swal.fire('Error', 'Gagal memperbarui berita.', 'error');
+      Swal.fire('Error', 'Gagal memperbarui artikel.', 'error');
     }
   };
 
@@ -154,21 +154,21 @@ export default function EditNews() {
     <div>
       <DashboardNavbar />
       <div className="container mt-5">
-        <h2>Edit Berita</h2>
+        <h2>Edit Artikel</h2>
 
         <div className="card p-4 mt-3">
           {/* Judul */}
-          <label className="fw-bold">Judul Berita</label>
+          <label className="fw-bold">Judul Artikel</label>
           <input
             type="text"
             className="form-control mb-2"
-            placeholder="Judul Berita"
+            placeholder="Judul Artikel"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
 
           {/* Konten */}
-          <label className="fw-bold">Konten Berita</label>
+          <label className="fw-bold">Konten Artikel</label>
           <ReactQuill value={content} onChange={setContent} className="mb-2" />
 
           {/* Kategori */}
@@ -226,7 +226,7 @@ export default function EditNews() {
               className="form-check-label fw-bold"
               htmlFor="featuredSwitch"
             >
-              Tandai sebagai Berita Unggulan
+              Tandai sebagai Artikel Unggulan
             </label>
           </div>
 

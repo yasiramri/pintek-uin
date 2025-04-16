@@ -36,7 +36,7 @@ const NewsFeatured = () => {
       <h2 className="mb-3">Artikel Utama</h2>
       <div className="row" style={{ fontSize: '16px' }}>
         {featuredNews.length === 0 ? (
-          <p className="text-center">Tidak ada berita unggulan.</p>
+          <p className="text-center">Tidak ada artikel unggulan.</p>
         ) : (
           featuredNews.map((item) => (
             <div

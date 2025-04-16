@@ -31,7 +31,8 @@ export default function NewsDetail() {
   };
 
   if (loading) return <p className="text-center mt-5">Loading...</p>;
-  if (!news) return <p className="text-center mt-5">Berita tidak ditemukan.</p>;
+  if (!news)
+    return <p className="text-center mt-5">Artikel tidak ditemukan.</p>;
 
   const imageUrl = `https://pintek-rest-production.up.railway.app${news.imagePath}`;
   const authorName = news.author?.username || 'Admin';

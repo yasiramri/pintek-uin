@@ -22,7 +22,7 @@ export default function News() {
       );
       setNewsList(sorted);
     } catch (error) {
-      console.error('Gagal mengambil berita:', error);
+      console.error('Gagal mengambil artikel:', error);
     } finally {
       setLoading(false);
     }
@@ -38,9 +38,9 @@ export default function News() {
     item.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) return <p className="text-center mt-4">Memuat berita...</p>;
+  if (loading) return <p className="text-center mt-4">Memuat Artikel...</p>;
   if (newsList.length === 0)
-    return <p className="text-center mt-4">Belum ada berita.</p>;
+    return <p className="text-center mt-4">Belum ada artikel.</p>;
 
   const highlight = filteredNews[0];
   const sideList = filteredNews.slice(1, 9);
@@ -68,7 +68,7 @@ export default function News() {
       {/* Jika tidak ada hasil */}
       {filteredNews.length === 0 ? (
         <p className="text-center">
-          Tidak ditemukan berita dengan kata kunci tersebut.
+          Tidak ditemukan artikel dengan kata kunci tersebut.
         </p>
       ) : (
         <div className="row">

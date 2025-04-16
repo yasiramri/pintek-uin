@@ -55,7 +55,7 @@ const NewsByCategorySlider = ({ categoryName }) => {
     <div className="container mt-5">
       <h2 className="mb-3">{categoryName}</h2>
       {categoryNews.length === 0 ? (
-        <p>Tidak ada berita dalam kategori ini.</p>
+        <p>Tidak ada artikel dalam kategori ini.</p>
       ) : (
         <Slider {...sliderSettings}>
           {categoryNews.map((item) => (

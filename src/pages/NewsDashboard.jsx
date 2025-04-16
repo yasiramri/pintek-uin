@@ -193,11 +193,11 @@ export default function DashboardNews() {
         },
       });
 
-      Swal.fire('Berhasil', 'Berita berhasil ditambahkan!', 'success');
+      Swal.fire('Berhasil', 'Artikel berhasil ditambahkan!', 'success');
       fetchNews();
       resetForm();
     } catch (error) {
-      Swal.fire('Error', 'Gagal menambahkan berita.', 'error');
+      Swal.fire('Error', 'Gagal menambahkan artikel.', 'error');
       console.error('Error adding news:', error);
     } finally {
       setUploading(false);
@@ -220,7 +220,7 @@ export default function DashboardNews() {
   const handleDelete = async (id) => {
     Swal.fire({
       title: 'Apakah Anda yakin?',
-      text: 'Berita akan dihapus secara permanen!',
+      text: 'Artikel akan dihapus secara permanen!',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Ya, hapus!',
@@ -230,10 +230,10 @@ export default function DashboardNews() {
         try {
           await api.delete(`/news/${id}`);
 
-          Swal.fire('Dihapus!', 'Berita telah dihapus.', 'success');
+          Swal.fire('Dihapus!', 'Artikel telah dihapus.', 'success');
           fetchNews();
         } catch (error) {
-          Swal.fire('Error', 'Gagal menghapus berita.', 'error');
+          Swal.fire('Error', 'Gagal menghapus Artikel.', 'error');
           console.error('Error deleting news:', error);
         }
       }
@@ -244,11 +244,11 @@ export default function DashboardNews() {
     <div className="d-flex">
       <DashboardNavbar />
       <div className="container mt-5">
-        <h2>Dashboard - Kelola Berita</h2>
+        <h2>Dashboard - Kelola Artikel</h2>
 
         {/* Form Tambah Berita */}
         <div className="card p-4 mt-3">
-          <h4>{editingNews ? 'Edit Berita' : 'Tambah Berita'}</h4>
+          <h4>{editingNews ? 'Edit Artike' : 'Tambah Artikel'}</h4>
           <input
             type="text"
             className="form-control mb-2"
@@ -411,7 +411,7 @@ export default function DashboardNews() {
               onChange={() => setIsFeatured(!isFeatured)}
             />
             <label className="form-check-label">
-              Tampilkan sebagai berita unggulan
+              Tampilkan sebagai artikel unggulan
             </label>
           </div>
 
@@ -423,8 +423,8 @@ export default function DashboardNews() {
             {uploading
               ? 'Processing...'
               : editingNews
-              ? 'Update Berita'
-              : 'Tambah Berita'}
+              ? 'Update Artikel'
+              : 'Tambah Artikel'}
           </button>
         </div>
 
@@ -449,7 +449,7 @@ export default function DashboardNews() {
         {/* List Berita dalam bentuk Card */}
         <div className="row">
           {filteredNews.length === 0 ? (
-            <p className="text-center">Tidak ada berita ditemukan.</p>
+            <p className="text-center">Tidak ada artikel ditemukan.</p>
           ) : (
             filteredNews.map((item) => (
               <div className="col-md-4 mb-4" key={item.id}>
