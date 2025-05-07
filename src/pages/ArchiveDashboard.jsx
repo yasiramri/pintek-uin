@@ -1,19 +1,24 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap for styling
-import DashboardNavbar from '../components/DashboardNavbar';
+import DashboardNavbar from '../components/DashboardNavbar'; // Mengimpor Navbar
 
 const ArchiveDashboard = () => {
   const [archivedArticles, setArchivedArticles] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  // Ambil URL API yang tepat berdasarkan lingkungan
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   // Fungsi untuk mendapatkan artikel yang diarsipkan
   useEffect(() => {
     const fetchArchivedArticles = async () => {
       setLoading(true);
       try {
-        const response = await axios.get('http://localhost:8080/archive');
+        const response = await axios.get(
+          `https://pintek-rest-production.up.railway.app/archive`
+        );
         if (response.data.status === 'success') {
           setArchivedArticles(response.data.data.archivedArticles);
         }
@@ -25,9 +30,9 @@ const ArchiveDashboard = () => {
     };
 
     fetchArchivedArticles();
-  }, []);
+  }, [apiUrl]);
 
-  // Fungsi untuk mengembalikan artikel
+  // Fungsi untuk mengembalikan artikel (restore)
   const restoreArticle = async (id, title) => {
     const result = await Swal.fire({
       title: `Restore article "${title}"?`,
@@ -40,7 +45,9 @@ const ArchiveDashboard = () => {
 
     if (result.isConfirmed) {
       try {
-        await axios.post(`http://localhost:8080/archive/restore/${id}`);
+        await axios.post(
+          `https://pintek-rest-production.up.railway.app/archive/restore/${id}`
+        );
         setArchivedArticles(
           archivedArticles.filter((article) => article.id !== id)
         );
@@ -65,7 +72,9 @@ const ArchiveDashboard = () => {
 
     if (result.isConfirmed) {
       try {
-        await axios.delete(`http://localhost:8080/archive/hard-delete/${id}`);
+        await axios.delete(
+          `https://pintek-rest-production.up.railway.app/archive/hard-delete/${id}`
+        );
         setArchivedArticles(
           archivedArticles.filter((article) => article.id !== id)
         );

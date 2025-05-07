@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -13,6 +13,7 @@ import News from './pages/News';
 import NewsDetail from './components/NewsDetail';
 import EditNews from './pages/EditNews';
 import StrukturOrganisasi from './pages/StrukturOrganisasi';
+import ArchiveDashboard from './pages/ArchiveDashboard'; // Import ArchiveDashboard
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import PrivateRoute from './routes/PrivateRoute';
@@ -35,18 +36,15 @@ function App() {
         }
 
         try {
-          await axios.get('https://pintek-rest-production.up.railway.app', {
+          await axios.get('http://localhost:8080', {
             headers: { Authorization: `Bearer ${accessToken}` },
           });
         } catch (error) {
           if (error.response?.status === 401) {
             try {
-              const res = await axios.post(
-                'https://pintek-rest-production.up.railway.app/auth/token',
-                {
-                  refreshToken,
-                }
-              );
+              const res = await axios.post('http://localhost:8080/auth/token', {
+                refreshToken,
+              });
 
               const newAccessToken = res.data.data.accessToken;
               localStorage.setItem('token', newAccessToken);
@@ -114,6 +112,17 @@ function App() {
             element={
               <PrivateRoute>
                 <EditNews />
+              </PrivateRoute>
+            }
+          />
+
+          {/* Route untuk Halaman Arsip */}
+          <Route
+            path="/dashboard/archive"
+            element={
+              <PrivateRoute>
+                <ArchiveDashboard />{' '}
+                {/* Menambahkan ArchiveDashboard di sini */}
               </PrivateRoute>
             }
           />
