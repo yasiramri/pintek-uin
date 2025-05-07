@@ -8,6 +8,7 @@ import {
   Users,
   LogOut,
   Menu,
+  Archive, // Import icon Arsip dari lucide-react
 } from 'lucide-react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
@@ -26,13 +27,10 @@ export default function SidebarDashboard() {
         return;
       }
 
-      await axios.delete(
-        'https://pintek-rest-production.up.railway.app/auth/logout',
-        {
-          data: { refreshToken },
-          headers: { 'Content-Type': 'application/json' },
-        }
-      );
+      await axios.delete('http://localhost:8080/auth/logout', {
+        data: { refreshToken },
+        headers: { 'Content-Type': 'application/json' },
+      });
 
       localStorage.removeItem('token');
       localStorage.removeItem('refreshToken');
@@ -109,6 +107,17 @@ export default function SidebarDashboard() {
             >
               <Users size={20} className="me-2" title="Struktur Organisasi" />
               {!isCollapsed && 'Struktur Organisasi'}
+            </Link>
+          </li>
+
+          {/* Menu Arsip */}
+          <li className="nav-item mb-2">
+            <Link
+              to="/dashboard/archive"
+              className="nav-link text-dark d-flex align-items-center"
+            >
+              <Archive size={20} className="me-2" title="Arsip" />
+              {!isCollapsed && 'Arsip'}
             </Link>
           </li>
         </ul>
@@ -191,6 +200,18 @@ export default function SidebarDashboard() {
               >
                 <Users size={20} className="me-2" />
                 Struktur Organisasi
+              </Link>
+            </li>
+
+            {/* Menu Arsip Mobile */}
+            <li className="nav-item mb-2">
+              <Link
+                to="/dashboard/archive"
+                className="nav-link text-dark d-flex align-items-center"
+                data-bs-dismiss="offcanvas"
+              >
+                <Archive size={20} className="me-2" />
+                Arsip
               </Link>
             </li>
           </ul>
