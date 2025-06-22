@@ -7,7 +7,7 @@ import DashboardNavbar from '../components/DashboardNavbar'; // Mengimpor Navbar
 const ArchiveDashboard = () => {
   const [archivedArticles, setArchivedArticles] = useState([]);
   const [loading, setLoading] = useState(false);
-  const imageBaseUrl = 'https://pintek-rest-production.up.railway.app/';
+  const imageBaseUrl = 'https://pintek-rest-production.up.railway.app';
 
   // Ambil URL API yang tepat berdasarkan lingkungan
   const apiUrl = process.env.REACT_APP_API_URL;
