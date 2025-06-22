@@ -7,6 +7,7 @@ import DashboardNavbar from '../components/DashboardNavbar'; // Mengimpor Navbar
 const ArchiveDashboard = () => {
   const [archivedArticles, setArchivedArticles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const imageBaseUrl = 'https://pintek-rest-production.up.railway.app/';
 
   // Ambil URL API yang tepat berdasarkan lingkungan
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -103,15 +104,18 @@ const ArchiveDashboard = () => {
               <div className="col-md-4 mb-4" key={article.id}>
                 <div className="card">
                   <img
-                    src="https://via.placeholder.com/150"
+                    src={`${imageBaseUrl}${article.imagePath}`}
                     alt="Article"
                     className="card-img-top"
                   />
                   <div className="card-body">
                     <h5 className="card-title">{article.title}</h5>
-                    <p className="card-text">
-                      {article.content.slice(0, 100)}...
-                    </p>
+                    <div
+                      className="card-text"
+                      dangerouslySetInnerHTML={{
+                        __html: article.content.slice(0, 100) + '...',
+                      }}
+                    />
                     <div className="d-flex justify-content-between">
                       <button
                         onClick={() =>
