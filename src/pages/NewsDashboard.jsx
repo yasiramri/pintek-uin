@@ -25,7 +25,7 @@ export default function DashboardNews() {
   const [newCategoryName, setNewCategoryName] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredNews, setFilteredNews] = useState([]);
-
+  const [previewImage, setPreviewImage] = useState(null);
   useEffect(() => {
     fetchNews();
     fetchCategories();
@@ -161,7 +161,26 @@ export default function DashboardNews() {
   };
 
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    const file = event.target.files[0];
+
+    // Validasi tipe file (hanya gambar)
+    const validImageTypes = [
+      'image/jpeg',
+      'image/png',
+      'image/gif',
+      'image/jpg',
+    ];
+    if (file && validImageTypes.includes(file.type)) {
+      setSelectedFile(file);
+
+      // Membuat preview gambar
+      const imagePreviewUrl = URL.createObjectURL(file);
+      setPreviewImage(imagePreviewUrl);
+    } else {
+      Swal.fire('Error', 'Hanya file gambar yang dapat diupload.', 'error');
+      setSelectedFile(null); // Reset file jika tidak valid
+      setPreviewImage(null); // Reset preview jika file tidak valid
+    }
   };
 
   const handleSubmit = async () => {
@@ -397,10 +416,20 @@ export default function DashboardNews() {
 
           <input
             type="file"
-            className="form-control mb-2"
+            className="form-control"
             onChange={handleFileChange}
             accept="image/*"
           />
+          {previewImage && (
+            <div className="mt-3">
+              <img
+                src={previewImage}
+                alt="Preview"
+                className="img-thumbnail"
+                style={{ maxHeight: '200px', objectFit: 'cover' }}
+              />
+            </div>
+          )}
 
           <div className="form-check form-switch mb-2">
             <input
