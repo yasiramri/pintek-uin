@@ -129,25 +129,17 @@ const StrukturOrganisasiDashboard = () => {
       });
   };
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-
-    // Validasi tipe file (hanya gambar)
-    const validImageTypes = [
-      'image/jpeg',
-      'image/png',
-      'image/gif',
-      'image/jpg',
-    ];
-
-    if (file && validImageTypes.includes(file.type)) {
-      setSelectedFile(file); // Simpan file yang valid
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: 'Invalid File',
-        text: 'Only image files (JPEG, PNG, GIF, JPG) are allowed.',
-      });
+  const handleImageChange = (id, e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const previewUrl = URL.createObjectURL(file);
+      setSelectedImages((prev) => ({
+        ...prev,
+        [id]: {
+          preview: previewUrl,
+          file,
+        },
+      }));
     }
   };
 
