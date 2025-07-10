@@ -40,7 +40,6 @@ export default function LoginForm() {
       localStorage.setItem('token', accessToken);
       localStorage.setItem('refreshToken', refreshToken); // ⬅️ Simpan refresh token juga
 
-      // Redirect ke dashboard setelah login sukses
       window.location.href = '/dashboard';
     } catch (error) {
       console.error('Login Error:', error);
