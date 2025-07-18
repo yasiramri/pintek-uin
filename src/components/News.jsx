@@ -33,6 +33,20 @@ export default function News() {
       path?.split('/').pop() || '404.png'
     }`;
 
+  // Format tanggal
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString('id-ID', options); // Menggunakan format tanggal Indonesia
+  };
+
+  // Fungsi untuk mengekstrak deskripsi singkat tanpa tag HTML
+  const extractDescription = (htmlContent) => {
+    // Hapus semua tag HTML dan ambil sedikit bagian dari konten
+    const text = htmlContent.replace(/<[^>]+>/g, '').trim();
+    return text.length > 100 ? text.slice(0, 100) + '...' : text; // Ambil 100 karakter pertama
+  };
+
   // Filter berdasarkan pencarian
   const filteredNews = newsList.filter((item) =>
     item.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -87,6 +101,14 @@ export default function News() {
                 {highlight.category?.name || 'Kategori'}
               </p>
               <h3 className="fw-bold">{highlight.title}</h3>
+              {/* Tanggal */}
+              <p className="text-muted" style={{ fontSize: '14px' }}>
+                {formatDate(highlight.createdAt)}
+              </p>
+              {/* Deskripsi singkat */}
+              <p className="text-muted" style={{ fontSize: '14px' }}>
+                {extractDescription(highlight.content)}
+              </p>
             </Link>
           </div>
 
@@ -118,6 +140,14 @@ export default function News() {
                     {item.title.length > 60
                       ? item.title.slice(0, 60) + '...'
                       : item.title}
+                  </p>
+                  {/* Tanggal */}
+                  <p className="text-muted" style={{ fontSize: '12px' }}>
+                    {formatDate(item.createdAt)}
+                  </p>
+                  {/* Deskripsi singkat */}
+                  <p className="text-muted" style={{ fontSize: '12px' }}>
+                    {extractDescription(item.content)}
                   </p>
                 </div>
               </Link>

@@ -28,6 +28,17 @@ const NewsByCategorySlider = ({ categoryName }) => {
     }
   };
 
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString('id-ID', options); // Menggunakan format tanggal Indonesia
+  };
+
+  const extractDescription = (htmlContent) => {
+    const text = htmlContent.replace(/<[^>]+>/g, '').trim();
+    return text.length > 100 ? text.substring(0, 100) + '...' : text; // Ambil 100 karakter pertama
+  };
+
   const sliderSettings = {
     dots: false,
     infinite: false,
@@ -89,6 +100,23 @@ const NewsByCategorySlider = ({ categoryName }) => {
                 <h5 className="fw-bold mt-1" style={{ fontSize: '16px' }}>
                   {item.title.replace(/<[^>]+>/g, '')}
                 </h5>
+
+                {/* Tanggal */}
+                <p className="text-muted" style={{ fontSize: '14px' }}>
+                  {formatDate(item.createdAt)}
+                </p>
+
+                {/* Deskripsi (2 paragraf pertama) */}
+                <p
+                  className="text-muted"
+                  style={{
+                    fontSize: '14px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {extractDescription(item.content)}
+                </p>
               </div>
             </div>
           ))}

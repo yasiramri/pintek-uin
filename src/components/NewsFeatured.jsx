@@ -31,6 +31,12 @@ const NewsFeatured = () => {
     return matches ? matches.join(' ') : ''; // Gabungkan hasilnya jika ada
   };
 
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const date = new Date(dateString);
+    return date.toLocaleDateString('id-ID', options); // Menggunakan format tanggal Indonesia
+  };
+
   return (
     <div className="container mt-5">
       <h2 className="mb-3">Artikel Utama</h2>
@@ -77,6 +83,11 @@ const NewsFeatured = () => {
                     {item.title.replace(/<[^>]+>/g, '')}{' '}
                     {/* Hapus tag HTML dari title */}
                   </h1>
+
+                  {/* Tanggal berita */}
+                  <p className="text-muted" style={{ fontSize: '14px' }}>
+                    {formatDate(item.createdAt)}
+                  </p>
 
                   {/* Konten berita (Hanya menampilkan <p> dari Quill) */}
                   <div
