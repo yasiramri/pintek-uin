@@ -314,3 +314,30 @@ select.form-select {
   padding-top: 10px;
   font-size: 14px;
 }
+
+/* Tambahkan di file CSS yang digunakan oleh komponen */
+.sejarah-container,
+.visi-container,
+.salam-direktur,
+.text-overlay,
+.profile-item p,
+.profile-item h1,
+.profile-item h3 {
+  font-size: 1.2rem; /* Ukuran font lebih besar */
+}
+
+.text-overlay {
+  font-size: 2rem; /* Ukuran font lebih besar untuk judul overlay */
+}
+
+.profile-judul h1 {
+  font-size: 2rem; /* Ukuran font untuk judul profile */
+}
+
+.salam-direktur p {
+  font-size: 1.1rem; /* Ukuran font lebih besar untuk salam direktur */
+}
+
+.profile-item h1 {
+  font-size: 1.8rem; /* Ukuran font lebih besar untuk judul Sejarah dan Visi */
+}
